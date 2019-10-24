@@ -1,5 +1,10 @@
 class FiguresController < ApplicationController
   
+  get '/figures' do 
+    @figures = Figure.all
+    erb :'/figures/index'
+  end
+  
   get '/figures/new' do 
     @titles = Title.all
     @landmarks = Landmark.all
@@ -7,9 +12,7 @@ class FiguresController < ApplicationController
   end
   
   get '/figures/:id' do 
-    @figures = Figure.all
     @figure = Figure.find_by(params[:id])
-    binding.pry
     erb :'/figures/show'
   end
   
@@ -22,20 +25,24 @@ class FiguresController < ApplicationController
       title = Title.create(name: params[:title]["name"])
       @figure.titles << title
     end
+    if params[:figure][:title_ids]
     params["figure"][:title_ids].each do |id|
       new_id = Title.find_by_id(id)
       @figure.titles << new_id
+       end
     end
     
     if !params[:landmark]["name"].empty? && !params[:landmark]["year"].empty?
       landmark = Landmark.create(name: params[:landmark]["name"], year_completed: params[:landmark]["year"])
       @figure.landmarks << landmark
     end
-    
-    params[:figure][:landmark_ids].each do |id|
-      new_id = Landmark.find_by_id(id)
-      @figure.landmark_ids << new_id
+   # binding.pry
+    if params[:figure][:landmark_ids]
+      @figure.landmark_ids = params[:figure][:landmark_ids]  
+      @figure.save
+      #binding.pry
     end
+    
     @figure.save
     redirect to "/figures/#{@figure.id}"
   end
