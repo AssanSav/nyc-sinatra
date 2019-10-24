@@ -3,7 +3,7 @@
     <input type="text" name="figure[name]" id="figure_name">
 
     <h2>Titles</h2>
-    <% Title.all.each do |title| %> 
+    <% @titles.each do |title| %> 
     <div>
         <label><%= title.name %></label>
         <input type="checkbox" name="figure[title_ids][]" id="title_<%= title.id %>" value="<%= title.id %>" >
@@ -15,7 +15,7 @@
     <input type="text" name="title[name]" id="new_title">
     
     <h2>Landmaks</h2>
-    <% Landmark.all.each do |landmark| %> 
+    <% @landmarks.each do |landmark| %> 
     <div>
         <label><%= landmark.name %></label>
         <input type="checkbox" name="figure[landmark_ids][]" id="landmark_<%= landmark.id %>" value="<%= landmark.id %>">
